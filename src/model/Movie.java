@@ -7,10 +7,20 @@ public class Movie {
     private int year;
     private String description;
     private Director director;
+
+    public String getName() {
+        return name;
+    }
+
     private List<Cast> cast;
+
+    public int getYear() {
+        return year;
+    }
 
     @Override
     public String toString() {
-        return String.format("Name: %s%nYear: %s%nDescription: %s%nDirector: %s%nCast: %s%n", name, year, description, director, cast);
+        return name;
+//        return String.format("Name: %s%nYear: %s%nDescription: %s%nDirector: %s%nCast: %s%n", name, year, description, director, cast);
     }
 }
