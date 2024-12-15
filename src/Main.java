@@ -10,10 +10,9 @@ public class Main {
         MovieList movieListCopy = FileUtil.readFile();
         movieListOriginal.printMovies();
         System.out.println("=".repeat(30));
-        movieListCopy.SortByYear(1);
+        movieListCopy.sortByDirector(2);
+//        movieListCopy.sortByName(2);
         movieListCopy.printMovies();
-        System.out.println("=".repeat(30));
-        movieListOriginal.printMovies();
 
 //        movieList.printMovies();
 //        movieList.sortMovies();

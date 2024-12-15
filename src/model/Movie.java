@@ -14,6 +14,10 @@ public class Movie {
 
     private List<Cast> cast;
 
+    public String getDirector() {
+        return director.getFullName();
+    }
+
     public int getYear() {
         return year;
     }

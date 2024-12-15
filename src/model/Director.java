@@ -3,8 +3,7 @@ package model;
 public class Director {
     private String fullName;
 
-    @Override
-    public String toString() {
+    public String getFullName() {
         return fullName;
     }
 }
