@@ -1,10 +1,8 @@
-import model.Movie;
+
 import model.MovieList;
 import utils.FileUtil;
 
-import java.sql.SQLOutput;
 import java.util.InputMismatchException;
-import java.util.List;
 import java.util.Scanner;
 
 public class Main {
@@ -16,12 +14,13 @@ public class Main {
 
         while (true) {
             System.out.println("1 - Вывести коллекцию всех фильмов на экран");
-            System.out.println("2 - Поиск фильма по названию");
+            System.out.println("2 - Поиск фильма");
             System.out.println("3 - Сортировка коллекции фильмов");
+            System.out.println("4 - Вывести список всех актеров и их роли");
             System.out.print("Выберите действие: ");
             try {
                 int choose = sc.nextInt();
-                if (choose > 3 || choose < 1) throw new NumberFormatException();
+                if (choose > 4 || choose < 1) throw new NumberFormatException();
                 makeAction(choose, movieListOriginal, movieListCopy);
             } catch (InputMismatchException e) {
                 System.out.println("Ввод не должен содержать букв или символов!");
@@ -40,10 +39,25 @@ public class Main {
         if (choose == 1) {
             movieListOriginal.printMovies();
         } else if (choose == 2) {
-            System.out.print("Введите название фильма: ");
-            sc.nextLine();
-            String name = sc.nextLine();
-            movieListCopy.searchByName(name);
+            System.out.println("Выберите как вы хотите найти фильм: \n" +
+                    "1 - По названию\n" +
+                    "2 - По актеру\n" +
+                    "3 - По режиссеру\n" +
+                    "4 - По дате выпуска\n" +
+                    "5 - Поиск фильма и роли актера");
+            int foundMethod = sc.nextInt();
+            if (foundMethod > 5 || foundMethod < 1) throw new NumberFormatException();
+            if (foundMethod == 1) {
+                movieListCopy.searchByName();
+            } else if (foundMethod == 2) {
+                movieListCopy.searchByActor();
+            } else if (foundMethod == 3) {
+                movieListCopy.searchByDirector();
+            } else if (foundMethod == 4) {
+                movieListCopy.searchByYear();
+            } else if (foundMethod == 5) {
+                movieListCopy.searchFilmAndRoleByActor();
+            }
         } else if (choose == 3) {
             while (true) {
                 System.out.println("Выберите вид сортировки\n" +
@@ -79,6 +93,8 @@ public class Main {
 
             }
 
+        } else {
+            movieListCopy.printAllActorsAndRoles();
         }
     }
 }

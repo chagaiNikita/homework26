@@ -3,39 +3,11 @@ package model;
 import java.util.*;
 
 public class MovieList {
+    private static Scanner sc = new Scanner(System.in);
     private List<Movie> movies;
 
 
-
-//    public void foundAndPrint(int choose, String str) {
-//        Map<String, String> filmIndex = new HashMap<>();
-//        Set<String> filmName = new HashSet<>();
-//
-//        if (choose == 1) {
-//            searchByActor(filmIndex, filmName, str);
-//        } else if (choose == 2) {
-//            searchByDirector(filmIndex, filmName, str);
-//        } else if (choose == 3) {
-//            searchByYear(filmIndex, filmName, str);
-//        } else if (choose == 4) {
-//            searchFilmAndRoleByActor(str);
-//        } else if (choose == 5) {
-//            printAllActorsAndRoles();
-//
-//        }
-//
-//
-//        if (filmName.size() != 0) {
-//            for (String e : filmName) {
-//                System.out.println(e);
-//            }
-//        } else {
-//            System.out.println("Фильм с данным запросом не найден");
-//        }
-//
-//    }
-
-    private void printAllActorsAndRoles() {
+    public void printAllActorsAndRoles() {
         List<Cast> casts = new ArrayList<>();
         for (Movie m : movies) {
             for (int i = 0; i < m.getCast().size(); i++) {
@@ -52,60 +24,131 @@ public class MovieList {
         }
     }
 
-    private void searchFilmAndRoleByActor(String str) {
-        Map<String, Map<String, String>> filmIndexSec = new HashMap<>();
-        Map<String, String> roleAndFilmName = new HashMap<>();
-        String actor = null;
-        for (Movie m : movies) {
-            for (int i = 0; i < m.getCast().size(); i++) {
-                filmIndexSec.putIfAbsent(m.getCastName(i).toLowerCase(), new HashMap<>());
-                filmIndexSec.get(m.getCastName(i).toLowerCase()).put(m.getName(), m.getCastRole(i));
-                if (filmIndexSec.containsKey(str.toLowerCase())) {
-                    if (actor == null) {  // Если это первый найденный актер, записываем его имя
-                        actor = m.getCastName(i);
+    public void searchFilmAndRoleByActor() {
+        while (true) {
+            sc.nextLine();
+            System.out.print("Введите имя актера: ");
+            String actorName = sc.nextLine();
+            if (actorName.isBlank()) {
+                System.out.println("Строка не может быть пустой!");
+            } else {
+                Map<String, Map<String, String>> filmIndexSec = new HashMap<>();
+                Map<String, String> roleAndFilmName = new HashMap<>();
+                String actor = null;
+                for (Movie m : movies) {
+                    for (int i = 0; i < m.getCast().size(); i++) {
+                        filmIndexSec.putIfAbsent(m.getCastName(i).toLowerCase(), new HashMap<>());
+                        filmIndexSec.get(m.getCastName(i).toLowerCase()).put(m.getName(), m.getCastRole(i));
+                        if (filmIndexSec.containsKey(actorName.toLowerCase())) {
+                            if (actor == null) {
+                                actor = m.getCastName(i);
+                            }
+                            roleAndFilmName.putAll(filmIndexSec.get(actorName.toLowerCase()));
+                        }
                     }
-                    roleAndFilmName.putAll(filmIndexSec.get(str.toLowerCase()));
+
                 }
+                System.out.println("Actor: " + actor);
+                for (Map.Entry<String, String> kv : roleAndFilmName.entrySet()) {
+                    System.out.printf("Film: %s%nRole: %s%n", kv.getKey(), kv.getValue());
+                    System.out.println("=".repeat(100));
+                }
+                break;
             }
 
         }
-        System.out.println("Actor: " + actor);
-        for (Map.Entry<String, String> kv : roleAndFilmName.entrySet()) {
-            System.out.printf("Film: %s%nRole: %s%n", kv.getKey(), kv.getValue());
-        }
+
     }
 
-    public void searchByActor(Map<String, String> filmIndex, Set<String> filmName, String str) {
-        for (Movie m : movies) {
-            for (int i = 0; i < m.getCast().size(); i++) {
-                filmIndex.put(m.getCastName(i).toLowerCase(), m.getName());
-                if (filmIndex.containsKey(str.toLowerCase())) {
-                    filmName.add(filmIndex.get(str.toLowerCase()));
+    public void searchByActor() {
+        Map<String, String> filmIndex = new HashMap<>();
+        Set<String> filmName = new HashSet<>();
+        while (true) {
+
+            System.out.print("Введите имя актера: ");
+            String name = sc.nextLine();
+            if (name.isBlank()) {
+                System.out.println("Строка не должна быть пустой!");
+            } else {
+                for (Movie m : movies) {
+                    for (int i = 0; i < m.getCast().size(); i++) {
+                        filmIndex.put(m.getCastName(i).toLowerCase(), m.getName());
+                        if (filmIndex.containsKey(name.toLowerCase())) {
+                            filmName.add(filmIndex.get(name.toLowerCase()));
+                        }
+                    }
+
                 }
+                if (!filmName.isEmpty()) {
+                    for (String f : filmName) {
+                        System.out.println(f);
+                    }
+                } else {
+                    System.out.println("Актер не найден");
+                }
+                break;
             }
-
+            sc.nextLine();
         }
+
+
     }
 
-    private void searchByDirector(Map<String, String> filmIndex, Set<String> filmName, String str) {
-        for (Movie m : movies) {
+    public void searchByDirector() {
+        Map<String, String> filmIndex = new HashMap<>();
+        Set<String> filmName = new HashSet<>();
+        System.out.print("Введите имя режиссера: ");
+        String name = sc.nextLine();
+        if (name.isBlank()) {
+            System.out.println("Строка не должна быть пустой");
+        } else {
+            for (Movie m : movies) {
                 filmIndex.put(m.getDirector().toLowerCase(), m.getName());
-                if (filmIndex.containsKey(str.toLowerCase())) {
-                    filmName.add(filmIndex.get(str.toLowerCase()));
+                if (filmIndex.containsKey(name.toLowerCase())) {
+                    filmName.add(filmIndex.get(name.toLowerCase()));
                 }
-
-
-        }
-    }
-    private void searchByYear(Map<String, String> filmIndex, Set<String> filmName, String str) {
-        for (Movie m : movies) {
-            filmIndex.put(String.valueOf(m.getYear()), m.getName());
-            if (filmIndex.containsKey(str)) {
-                filmName.add(filmIndex.get(str));
             }
-
-
+            if (!filmName.isEmpty()) {
+                for (String f : filmName) {
+                    System.out.println(f);
+                }
+            } else {
+                System.out.println("Фильм с этим режиссером не найден");
+            }
         }
+
+
+    }
+    public void searchByYear() {
+        Map<String, String> filmIndex = new HashMap<>();
+        Set<String> filmName = new HashSet<>();
+        int year = 0;
+        System.out.println("Введите год выпуска: ");
+        while (true) {
+            try {
+                year = sc.nextInt();
+                for (Movie m : movies) {
+                    filmIndex.put(String.valueOf(m.getYear()), m.getName());
+                    if (filmIndex.containsKey(String.valueOf(year))) {
+                        filmName.add(filmIndex.get(String.valueOf(year)));
+                    }
+
+
+                }
+                if (!filmName.isEmpty()) {
+                    for (String f : filmName) {
+                        System.out.println(f);
+                    }
+                } else {
+                    System.out.println("Фильм не найден");
+                }
+                break;
+            } catch (InputMismatchException e) {
+                System.out.println("Год не может содержать букв");
+            }
+        }
+
+
     }
 
     public void sortByYear(int choose) {
@@ -140,20 +183,32 @@ public class MovieList {
     }
 
 
-    public void searchByName(String str) {
-        List<String> moviesList = new ArrayList<>();
-        for (Movie m : movies) {
-            if (m.getName().toLowerCase().contains(str.toLowerCase())) {
-                moviesList.add(m.getName());
+    public void searchByName() {
+        while (true) {
+            System.out.print("Введите название фильма: ");
+            String name = sc.nextLine();
+            if (name.isBlank()) {
+                System.out.println("Строка не может быть пустой!");
+            } else {
+                List<String> moviesList = new ArrayList<>();
+                for (Movie m : movies) {
+                    if (m.getName().toLowerCase().contains(name.toLowerCase())) {
+                        moviesList.add(m.getName());
+                    }
+                }
+                if (!moviesList.isEmpty()) {
+                    for (String m : moviesList) {
+                        System.out.println(m);
+                    }
+                } else {
+                    System.out.println("Фильм не найден");
+                }
+                break;
             }
+            sc.nextLine();
         }
-        if (!moviesList.isEmpty()) {
-            for (String m : moviesList) {
-                System.out.println(m);
-            }
-        } else {
-            System.out.println("Фильм не найден");
-        }
+
+
 
     }
 
