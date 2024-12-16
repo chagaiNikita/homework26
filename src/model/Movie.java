@@ -16,6 +16,10 @@ public class Movie {
         return cast;
     }
 
+    public String getCastRole(int i) {
+        return cast.get(i).getRole();
+    }
+
     public String getCastName(int i) {
         return cast.get(i).getFullName();
     }
