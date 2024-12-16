@@ -12,6 +12,14 @@ public class Movie {
         return name;
     }
 
+    public List<Cast> getCast() {
+        return cast;
+    }
+
+    public String getCastName(int i) {
+        return cast.get(i).getFullName();
+    }
+
     private List<Cast> cast;
 
     public String getDirector() {

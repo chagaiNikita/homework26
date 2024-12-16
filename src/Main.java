@@ -13,6 +13,7 @@ public class Main {
         movieListCopy.sortByDirector(2);
 //        movieListCopy.sortByName(2);
         movieListCopy.printMovies();
+        movieListCopy.foundAndPrint(3, "2019");
 
 //        movieList.printMovies();
 //        movieList.sortMovies();
