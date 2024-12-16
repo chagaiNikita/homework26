@@ -2,7 +2,7 @@ package model;
 
 import java.util.Objects;
 
-public class Cast implements Comparable <Cast>{
+public class Cast implements Comparable<Cast> {
     private String fullName;
     private String role;
 

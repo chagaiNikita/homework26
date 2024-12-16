@@ -119,6 +119,7 @@ public class MovieList {
 
 
     }
+
     public void searchByYear() {
         Map<String, String> filmIndex = new HashMap<>();
         Set<String> filmName = new HashSet<>();
@@ -170,7 +171,8 @@ public class MovieList {
             movies.sort(Comparator.comparing(Movie::getName).reversed());
         }
     }
-    public void sortByDirector (int choose) {
+
+    public void sortByDirector(int choose) {
         if (choose == 1) {
             movies.sort(Comparator.comparing(Movie::getDirector));
         } else if (choose == 2) {
@@ -209,11 +211,10 @@ public class MovieList {
         }
 
 
-
     }
 
 
-    public void printMovies()  {
+    public void printMovies() {
         for (Movie m : movies) {
             System.out.println(m.getName());
         }

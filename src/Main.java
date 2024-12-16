@@ -7,6 +7,7 @@ import java.util.Scanner;
 
 public class Main {
     public static Scanner sc = new Scanner(System.in);
+
     public static void main(String[] args) {
         MovieList movieListOriginal = FileUtil.readFile();
         MovieList movieListCopy = FileUtil.readFile();
@@ -31,10 +32,9 @@ public class Main {
         }
 
 
-
     }
 
-    public static void makeAction (int choose, MovieList movieListOriginal, MovieList movieListCopy) {
+    public static void makeAction(int choose, MovieList movieListOriginal, MovieList movieListCopy) {
 
         if (choose == 1) {
             movieListOriginal.printMovies();
