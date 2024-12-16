@@ -10,12 +10,18 @@ public class MovieList {
     public void foundAndPrint(int choose, String str) {
         Map<String, String> filmIndex = new HashMap<>();
         Set<String> filmName = new HashSet<>();
+
         if (choose == 1) {
             searchByActor(filmIndex, filmName, str);
         } else if (choose == 2) {
             searchByDirector(filmIndex, filmName, str);
         } else if (choose == 3) {
             searchByYear(filmIndex, filmName, str);
+        } else if (choose == 4) {
+            searchFilmAndRoleByActor(str);
+        } else if (choose == 5) {
+            printAllActorsAndRoles();
+
         }
 
 
@@ -27,6 +33,46 @@ public class MovieList {
             System.out.println("Фильм с данным запросом не найден");
         }
 
+    }
+
+    private void printAllActorsAndRoles() {
+        List<Cast> casts = new ArrayList<>();
+        for (Movie m : movies) {
+            for (int i = 0; i < m.getCast().size(); i++) {
+                Cast cast = new Cast(m.getCastName(i), m.getCastRole(i));
+                casts.add(cast);
+            }
+        }
+        casts.sort(Comparator.naturalOrder());
+        Set<Cast> c = new LinkedHashSet<>(casts);
+        casts.clear();
+        casts.addAll(c);
+        for (Cast d : casts) {
+            System.out.println(d);
+        }
+    }
+
+    private void searchFilmAndRoleByActor(String str) {
+        Map<String, Map<String, String>> filmIndexSec = new HashMap<>();
+        Map<String, String> roleAndFilmName = new HashMap<>();
+        String actor = null;
+        for (Movie m : movies) {
+            for (int i = 0; i < m.getCast().size(); i++) {
+                filmIndexSec.putIfAbsent(m.getCastName(i).toLowerCase(), new HashMap<>());
+                filmIndexSec.get(m.getCastName(i).toLowerCase()).put(m.getName(), m.getCastRole(i));
+                if (filmIndexSec.containsKey(str.toLowerCase())) {
+                    if (actor == null) {  // Если это первый найденный актер, записываем его имя
+                        actor = m.getCastName(i);
+                    }
+                    roleAndFilmName.putAll(filmIndexSec.get(str.toLowerCase()));
+                }
+            }
+
+        }
+        System.out.println("Actor: " + actor);
+        for (Map.Entry<String, String> kv : roleAndFilmName.entrySet()) {
+            System.out.printf("Film: %s%nRole: %s%n", kv.getKey(), kv.getValue());
+        }
     }
 
     private void searchByActor(Map<String, String> filmIndex, Set<String> filmName, String str) {
